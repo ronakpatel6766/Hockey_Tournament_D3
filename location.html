@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.8/d3.min.js" type="text/JavaScript"></script>
+        <script src="https://d3js.org/d3-geo-projection.v1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.20/topojson.js"></script>
+        <link rel="stylesheet" href="css/location.css">
+        <link rel="icon" 
+      type="image/png" 
+      href="images/logo.png">
+        <title>Location-final Project</title>
+    </head>
+    <body>
+      <ul>
+           <li><a href="index.html">Home Page</a></li>
+           <li> <a href="location.html">Continents</a></li>
+           <li><a href="attendee.html">Attendance Data</a></li>
+           <li><a href="piechart.html">Pie Graph</a></li>
+           <li><a href="line.html">Line Chart</a></li>
+       </ul>
+        <h1>Hockey World-Cup Venue Details from 1971 to 1991</h1>
+        <div id="viz" >
+            <SVG>
+            </SVG>
+
+        </div>
+                <br>
+                <button class="locationButton"  onClick="hoclocations()" > Hockey Host Locations</button>
+                <br>
+                <button class="winnerButton" onClick="hocwinners()"> Hockey World Cup Winners    </button>
+                <br>
+                <button class="runnerUpButton" onClick="hocrunnerup()"> Hockey World Cup Runnerups</button>
+            <script>
+                let hockeyWinners = [];
+                let hockeyLocations = ["India"];
+                let hockeyRunnerup = [];
+                var PromiseWrapper = (xhr, d) => new Promise(resolve => xhr(d, (p) => resolve(p)));
+                Promise
+                    .all([
+                        PromiseWrapper(d3.json, "data/world.geojson"),
+                        PromiseWrapper(d3.csv, "data/hockeytournament.csv")
+                    ])
+                    .then(resolve => {
+                        createMap(resolve[0], resolve[1]);
+                    });
+                function createMap(countries, hockeyworldcup) {
+                    hockeyworldcup.forEach(data => {
+                        hockeyWinners.push(data.hockeywinner);
+                        hockeyLocations.push(data.hockeyhostlocation);
+                        hockeyRunnerup.push(data.hockeyrunnerup);
+                    });
+                    console.log(hockeyLocations, hockeyRunnerup, hockeyWinners);
+                    var aprojection = d3.geoMercator()
+                        .scale(120)
+                        .translate([240, 230])
+                        .center([25, 25]);
+                    var geoPath = d3.geoPath().projection(aprojection);
+                    d3.select("SVG")
+                        .selectAll("path")
+
+                        .data(countries.features)
+                        .enter()
+                        .append("path")
+                        .attr("d", geoPath)
+                        .attr("class", "country")
+                        .style("fill", "#000000");
+                }
+                
+                function hoclocations() {
+                    setToPink();
+                    d3.select("SVG")
+                      .selectAll("path.country")
+
+                      .filter(function(p, q) {
+                            console.log(p, q);
+                            return hockeyLocations.indexOf(p.properties.name) > -1
+                        })
+                      .style("fill", "#e0bb20");
+                }
+                function setToPink() {
+                    d3.select("SVG")
+                      .selectAll("path.country")
+                      .style("fill", "#000000");
+                }
+                function hocwinners() {
+                    setToPink();
+                    d3.select("SVG")
+                        .selectAll("path.country")
+
+                        .filter(function(p, q) {
+                            console.log(p, q);
+                            return hockeyWinners.indexOf(p.properties.name) > -1
+                        })
+                          .style("fill", "#a7d129");
+                }
+                function hocrunnerup() {
+                    setToPink();
+                    d3.select("SVG")
+                      .selectAll("path.country")
+
+                      .filter(function(p, q) {
+                            console.log(p, q);
+                            return hockeyRunnerup.indexOf(p.properties.name) > -1
+                        })
+                      .style("fill", "#84f2d6");
+                }
+                
+            </script>
+    </body>
+
+</html>

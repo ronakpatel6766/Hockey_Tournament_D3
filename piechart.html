@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <link rel="icon" 
+      type="image/png" 
+      href="images/logo.png">
+      <ul>
+           <li><a href="index.html">Home Page</a></li>
+           <li> <a href="location.html">Continents</a></li>
+           <li><a href="attendee.html">Attendance Data</a></li>
+           <li><a href="piechart.html">Pie Graph</a></li>
+           <li><a href="line.html">Line Chart</a></li>
+       </ul>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.min.js"></script>
+<link rel="stylesheet" href="css/pie.css">
+    <title>Pie Chart-final Project</title>
+      
+    
+  </head>
+  <body>
+       <h1>Hockey World-Cup Details for Attendance and Host Location</h1>
+    <svg width="960" height="400"></svg>
+    <script>
+      const pieValue = d => d.attendance;
+      const colorValue = d => d.hockeyhostlocation;
+      const colorLabel = 'Hockey Host Locations vs Attendance';
+      const margin = { left: 20, right: 400, top: 1, bottom: 1 };
+      
+      const svg = d3.select('svg');
+      const width = svg.attr('width');
+      const height = svg.attr('height');
+      const innerWidth = width - margin.left - margin.right;
+      const innerHeight = height - margin.top - margin.bottom;
+
+      const pie = d3.pie().value(pieValue);
+      const arc = d3.arc()
+        .innerRadius(0)
+        .outerRadius(innerHeight / 2);
+
+      const g = svg.append('g')
+          .attr('transform', `translate(${margin.left},${margin.top})`);
+      const pieG = g.append('g')
+          .attr('transform', `translate(${innerWidth / 2},${innerHeight / 2})`);
+      const colorLegendG = g.append('g')
+          .attr('transform', `translate(${innerWidth + 90}, 80)`);
+
+      colorLegendG.append('text')
+          .attr('class', 'legend-label')
+          .attr('x', -70)
+          .attr('y', -35)
+          .text(colorLabel);
+
+      const colorScale = d3.scaleOrdinal()
+        .range(d3.schemeCategory10);
+
+      const colorLegend = d3.legendColor()
+        .scale(colorScale)
+        .shape('circle');
+
+      const row = d => {
+        d.attendance = +d.attendance;
+        return d;
+      };
+
+      d3.csv('data/hockeytournament.csv', row, data => {
+        colorScale.domain(data.map(colorValue));
+
+        const arcs = pie(data);
+
+        pieG.selectAll('path').data(arcs)
+          .enter().append('path')
+            .attr('d', arc)
+            .attr('fill', d => colorScale(colorValue(d.data)));
+
+        colorLegendG.call(colorLegend)
+          .selectAll('.cell text')
+            .attr('dy', '0.1em');
+      });
+    </script>
+  </body>
+</html>

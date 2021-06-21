@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.8/d3.min.js" type="text/JavaScript"></script>
+        <script src="https://d3js.org/d3-geo-projection.v1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.20/topojson.js"></script>
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="icon" 
+      type="image/png" 
+      href="images/logo.png">
+        <title>Home Page-final Project</title>
+    </head>
+    <body>
+       <ul>
+           <li><a href="index.html">Home Page</a></li>
+           <li> <a href="location.html">Continents</a></li>
+           <li><a href="attendee.html">Attendance Data</a></li>
+           <li><a href="piechart.html">Pie Graph</a></li>
+           <li><a href="line.html">Line Chart</a></li>
+       </ul>
+        <h1>  Some Highlights of Hockey World-Cup Tournament </h1>
+        <div class="content">
+            <div class="images">
+                <img src="./images/slider1.jpg">
+                <img src="./images/slider2.jpg">
+                <img src="./images/slider3.jpg">
+                <img src="./images/slider4.jpg">
+                <img src="./images/slider5.jpg">
+            </div>
+        </div>
+        <script>
+              var indexValue = 0;
+              function slideShow(){
+                setTimeout(slideShow, 2500);
+                var x;
+                const img = document.querySelectorAll("img");
+                for(x = 0; x < img.length; x++){
+                  img[x].style.display = "none";
+                }
+                indexValue++;
+                if(indexValue > img.length){indexValue = 1}
+                img[indexValue -1].style.display = "block";
+              }
+              slideShow();
+        </script>
+        
+        
+    </body>
+</html>

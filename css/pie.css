@@ -1,0 +1,70 @@
+body {
+        margin:auto;
+        margin-top: 60px;
+       background-image: url("../images/back1.png");
+            background-repeat: no-repeat;
+            background-size:  cover;
+         align-content: center;
+        }
+        ul {
+             list-style-type: none;
+              margin: 0;
+              padding: 0;
+              overflow: hidden;
+               background-color: #194350;
+              position: fixed;
+              top: 0;
+            
+              width: 100%;
+            }
+
+        li {
+          float: left;
+        }
+
+        li a {
+          display: block;
+          color: white;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+        }
+
+        li a:hover:not(.active) {
+          background-color: #111;
+        }
+
+        .active {
+          background-color: #4CAF50;
+        }
+ body {
+        margin: 0px;
+      }
+      .domain {
+        display: none;
+      }
+      .legendCells text {
+        fill: white;
+        font-size: 16px;
+        font-family: sans-serif;
+      }
+      .legend-label {
+        fill: #635F5D;
+        font-size: 20px;
+        font-family: sans-serif;
+      }
+        svg{
+            padding-top: 80px;
+            padding-bottom: 80px;
+            margin-top: 1%;
+            border-radius: 30px;
+            margin-left: 350px;
+            background: #212121;
+            box-shadow: 5px 10px #888888:
+            
+        }
+h1{
+    margin-top: 70px;
+    text-align: center;
+    color: black;
+}
